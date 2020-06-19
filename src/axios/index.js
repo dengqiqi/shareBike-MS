@@ -41,7 +41,7 @@ export default class Axios {
         }
         if (response.status === 200) {
           let res = response.data;
-          res.result.map((item, index)=>{
+          res.result.list.map((item, index)=>{
             return item.key = index;
           })
 

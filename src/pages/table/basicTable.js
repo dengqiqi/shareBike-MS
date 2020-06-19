@@ -1,14 +1,21 @@
 import React from 'react'
 import {
   Card,
-  Table
+  Table,
+  message,
+  Button
 } from 'antd'
 // import axios from 'axios'
 import axios from './../../axios'
 import {Modal} from 'antd';
+import utils from '../../utils/utils';
 
 export default class BasicTable extends React.Component{
   state = {};
+
+  params = {
+    page: 1
+  }
 
   componentDidMount() {
     const dataSource = [
@@ -53,18 +60,29 @@ export default class BasicTable extends React.Component{
   }
 
   request = () => {
+    let _this = this;
    axios.ajax({
      url: '/table/list',
      data:{
        params: {
-         page:1
+         page:this.params.page
        },
        loading: true
      }
    }).then((res)=>{
+     res.result.list.map((item, index)=>{
+      item.key = index;
+     })
      if (res.code === 0) {
        this.setState({
-         dataSource2: res.result
+         dataSource2: res.result.list,
+         selectedRowKeys: [],
+         selectedRows: null,
+         pagination: utils.pagination(res, (current)=>{
+          // todo
+          _this.params.page = current;
+          this.request();
+         })
        })
      }
    })
@@ -79,6 +97,22 @@ export default class BasicTable extends React.Component{
     Modal.info({
       title: '信息',
       content: `${record.userName}`
+    })
+  }
+
+  handleDelete = () => {
+    let rows = this.state.selectedRows;
+    let ids = [];
+    rows.map((item)=>{
+      ids.push(item.id)
+    })
+    Modal.confirm({
+      title: '删除提示',
+      content: `您确定要删除这些数据吗?${ids.join(',')}`,
+      onOk: ()=>{
+        message.success('删除成功');
+        this.request();
+      }
     })
   }
 
@@ -145,9 +179,20 @@ export default class BasicTable extends React.Component{
     ];
     const { selectedRowKeys } = this.state;
     const rowSelection = {
-        type:'radio',
-        selectedRowKeys
-    }
+      type:'radio',
+      selectedRowKeys
+    };
+
+    const rowCheckSelection = {
+      type:'checkbox',
+      selectedRowKeys,
+      onChange: (selectedRowKeys, selectedRows)=>{
+        this.setState({
+          selectedRowKeys,
+          selectedRows
+        });
+      }
+    };
 
     return (
       <div style={{width: '100%'}}>
@@ -158,7 +203,7 @@ export default class BasicTable extends React.Component{
             columns={columns}
             dataSource={this.state.dataSource}
             bordered
-            pagination={false}
+            pagination={this.state.pagination}
           />
         </Card>
 
@@ -170,7 +215,7 @@ export default class BasicTable extends React.Component{
             columns={columns}
             dataSource={this.state.dataSource2}
             bordered
-            pagination={false}
+            pagination={this.state.pagination}
           />
         </Card>
 
@@ -183,7 +228,7 @@ export default class BasicTable extends React.Component{
             rowSelection={rowSelection}
             dataSource={this.state.dataSource2}
             bordered
-            pagination={false}
+            pagination={this.state.pagination}
             onRow={(record, index) => {
               return {
                 onClick: () => {
@@ -191,6 +236,37 @@ export default class BasicTable extends React.Component{
                 },
               };
             }}
+          />
+        </Card>
+
+        <Card
+          title="Mock-复选"
+          style={{margin: '10px 0'}}
+        >
+          <div>
+            <Button onClick={this.handleDelete}>删除</Button>
+          </div>
+          <Table 
+            columns={columns}
+            rowSelection={rowCheckSelection}
+            dataSource={this.state.dataSource2}
+            bordered
+            pagination={this.state.pagination}
+          />
+        </Card>
+
+        <Card
+          title="Mock-表格分页"
+          style={{margin: '10px 0'}}
+        >
+          <div>
+            <Button onClick={this.handleDelete}>删除</Button>
+          </div>
+          <Table 
+            bordered
+            columns={columns}
+            dataSource={this.state.dataSource2}
+            pagination={this.state.pagination}
           />
         </Card>
       </div>
