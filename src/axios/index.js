@@ -41,16 +41,13 @@ export default class Axios {
         }
         if (response.status === 200) {
           let res = response.data;
-          res.result.list.map((item, index)=>{
-            return item.key = index;
-          })
 
           if (res.code === 0) {
             resolve(res)
           } else {
             Modal.info({
               title: '提示',
-              content: res.msg
+              content: 'res.code不为0'
             })
           }
         } else {

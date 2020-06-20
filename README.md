@@ -17,3 +17,6 @@ Add the table component, use easyMock and Rap2 to mock data
 
 2020/06/19
 Erich the table component
+
+2020/06/20
+Add a bike business city management module
