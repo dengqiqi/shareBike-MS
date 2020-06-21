@@ -20,3 +20,6 @@ Erich the table component
 
 2020/06/20
 Add a bike business city management module
+
+2020/06/21
+Perfect opening city function
