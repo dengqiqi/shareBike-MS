@@ -23,3 +23,6 @@ Add a bike business city management module
 
 2020/06/21
 Perfect opening city function
+
+2020/06/22
+Development order management module

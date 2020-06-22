@@ -155,7 +155,6 @@ class FilterForm extends React.Component {
           <FormItem
             label='城市'
             name="city"
-            noStyle
             rules={[{ required: true, message: 'city is required' }]}
           >
             <Select placeholder='全部' style={{width: '100px'}}>
@@ -169,7 +168,6 @@ class FilterForm extends React.Component {
           <FormItem
             label='用车模式'
             name="model"
-            noStyle
             rules={[{ required: true, message: 'model is required' }]}
           >
             <Select placeholder='全部' style={{width: '150px'}}>
@@ -182,7 +180,6 @@ class FilterForm extends React.Component {
           <FormItem
             label='营运模式'
             name="op_model"
-            noStyle
             rules={[{ required: true, message: 'op_model is required' }]}
           >
             <Select placeholder='全部' style={{width: '100px'}}>
@@ -195,7 +192,6 @@ class FilterForm extends React.Component {
           <FormItem
             label='加盟商授权状态'
             name="auth_status"
-            noStyle
             rules={[{ required: true, message: 'model is required' }]}
           >
             <Select placeholder='全部' style={{width: '100px'}}>
