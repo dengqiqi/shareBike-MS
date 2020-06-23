@@ -17,6 +17,8 @@ import BasicTable from './pages/table/basicTable'
 import HighTable from './pages/table/highTable'
 import City from './pages/city/index'
 import Order from './pages/order/index'
+import Common from './common'
+import OrderDetail from './pages/order/detail'
 import Test from './pages/test/index'
 import NoMatch from './pages/noMatch/index';
 
@@ -26,29 +28,38 @@ export default class IRouter extends React.Component {
     return (
       <HashRouter>
         <App>
-          <Route path='/login' component={Login} />
-          <Route path='/' render={()=>
-            <Admin>
-              <Switch>
-                <Route path='/admin/ui/buttons' component={Buttons} />
-                <Route path='/admin/ui/modals' component={Modals} />
-                <Route path='/admin/ui/loadings' component={Loadings} />
-                <Route path='/admin/ui/notification' component={Notice} />
-                <Route path='/admin/ui/tabs' component={Tabs} />
-                <Route path='/admin/ui/gallery' component={Gallery} />
-                <Route path='/admin/ui/carousel' component={Carousel} />
-                <Route path='/admin/form/login' component={FormLogin} />
-                <Route path='/admin/form/reg' component={FormRegister} />
-                <Route path='/admin/table/basic' component={BasicTable} />
-                <Route path='/admin/table/high' component={HighTable} />
-                <Route path='/admin/city' component={City} />
-                <Route path='/admin/order' component={Order} />
-                <Route path='/admin/test' component={Test} />
-                <Route path='/admin/ui/messages' component={Message} />
-                <Route component={NoMatch} />
-              </Switch>
-            </Admin>
-          } />
+          <Switch>
+            <Route path='/login' component={Login} />
+
+            <Route path='/common' render={()=>
+              <Common>
+                <Route path='/common/order/detail/:orderId' component={OrderDetail}></Route>
+              </Common>
+            } />
+
+            <Route path='/' render={()=>
+              <Admin>
+                <Switch>
+                  <Route path='/admin/ui/buttons' component={Buttons} />
+                  <Route path='/admin/ui/modals' component={Modals} />
+                  <Route path='/admin/ui/loadings' component={Loadings} />
+                  <Route path='/admin/ui/notification' component={Notice} />
+                  <Route path='/admin/ui/tabs' component={Tabs} />
+                  <Route path='/admin/ui/gallery' component={Gallery} />
+                  <Route path='/admin/ui/carousel' component={Carousel} />
+                  <Route path='/admin/form/login' component={FormLogin} />
+                  <Route path='/admin/form/reg' component={FormRegister} />
+                  <Route path='/admin/table/basic' component={BasicTable} />
+                  <Route path='/admin/table/high' component={HighTable} />
+                  <Route path='/admin/city' component={City} />
+                  <Route path='/admin/order' component={Order} />
+                  <Route path='/admin/test' component={Test} />
+                  <Route path='/admin/ui/messages' component={Message} />
+                  <Route component={NoMatch} />
+                </Switch>
+              </Admin>
+            } />
+          </Switch>
         </App>
       </HashRouter>
     );

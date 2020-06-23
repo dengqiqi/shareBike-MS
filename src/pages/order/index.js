@@ -13,7 +13,6 @@ export default class order extends React.Component {
   state = {
     orderConfirmVisible: false,
     orderInfo: {},
-    selectedRowKeys: []
   }
 
   params = {
@@ -98,6 +97,19 @@ export default class order extends React.Component {
     })
   }
 
+  openOrderDetail = () => {
+    let item = this.state.selectedItem;
+
+    if (!item) {
+      Modal.info({
+        title: '信息',
+        content: '请先选择一条订单进行结束'
+      })
+      return ;
+    }
+    window.open(`/#/common/order/detail/${item.id}`, '_blank')
+  }
+
   componentDidMount() {
     this.requestList();
   }
@@ -171,7 +183,7 @@ export default class order extends React.Component {
         </Card>
 
         <Card style={{marginTop: 10}}>
-          <Button type='primary'>订单详情</Button>
+          <Button type='primary' onClick={this.openOrderDetail}>订单详情</Button>
           <Button 
             type='primary' style={{marginLeft: 10}}
             onClick={this.handleConFirm}
@@ -189,7 +201,10 @@ export default class order extends React.Component {
             rowSelection={rowSelection}
             onRow={(record, index) => {
               return {
-                onClick: () => {
+                onClick: (e) => {
+                  e.preventDefault();
+                  // e.stopPropagation();
+                  console.log(e, '----------------------')
                   this.onRowClick(record, index);
                 }
               };

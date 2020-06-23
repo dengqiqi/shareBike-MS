@@ -1,19 +1,15 @@
 @import './default.less';
 @import './loading.less';
-body {
-  background: @colorL;
-  font-family: "Helvetica Neue For Number", "PingFang SC Light", "Heiti SC", "San Francisco", "Helvetica", Arial, sans-serif;
-}
 ul,li{
-  list-style: none;
+    list-style: none;
 }
 .clearfix{
-  &:after{
-    content:" ";
-    clear:both;
-    display:block;
-    visibility:hidden;
-  }
+    &::after{
+        content:' ';
+        clear:both;
+        display: block;
+        visibility: hidden;
+    }
 }
 .container{
     .nav-left{
@@ -39,5 +35,10 @@ ul,li{
     .ant-table-wrapper{
         margin-left: -1px;
         margin-right: -2px;
+    }
+}
+.ant-card{
+    button{
+        margin-right: 10px;
     }
 }

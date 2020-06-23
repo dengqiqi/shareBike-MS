@@ -26,3 +26,6 @@ Perfect opening city function
 
 2020/06/22
 Development order management module
+
+2020/26/23
+Development map features
