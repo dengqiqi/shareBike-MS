@@ -27,5 +27,8 @@ Perfect opening city function
 2020/06/22
 Development order management module
 
-2020/26/23
+2020/06/23
 Development map features
+
+2020/06/24
+Packaging BseForm modules and requestList

@@ -5,6 +5,7 @@ import {
 } from 'antd'
 import axios from './../../axios/index'
 import Utils from './../../utils/utils'
+import BaseForm from './../../components/BaseForm/index'
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -17,6 +18,44 @@ export default class order extends React.Component {
 
   params = {
     page: 1
+  }
+
+  formList = [
+    {
+      type: 'SELECT',
+      label: '城市',
+      field: 'city',
+      placeholder: '全部',
+      initialValue: '0',
+      width: 100,
+      list: [
+        {id: '0', name: '全部'},
+        {id: '1', name: '北京'},
+        {id: '2', name: '天津'},
+        {id: '3', name: '上海'},
+      ]
+    },
+    {
+      type: '时间查询'
+    },
+    {
+      type: 'SELECT',
+      label: '订单状态',
+      field: 'order_status',
+      placeholder: '全部',
+      initialValue: '1',
+      width: 100,
+      list: [
+        {id: '0', name: '全部'},
+        {id: '1', name: '进行中'},
+        {id: '2', name: '结束行程'},
+      ]
+    },
+  ]
+
+  handleFilter = (params) => {
+    this.params = params;
+    this.requestList();
   }
 
   requestList = () => {
@@ -179,7 +218,10 @@ export default class order extends React.Component {
     return (
       <div style={{width: '100%'}}>
         <Card>
-          <FilterForm />
+          <BaseForm 
+            formList={this.formList}
+            filterSubmit={this.handleFilter}
+          />
         </Card>
 
         <Card style={{marginTop: 10}}>
@@ -252,69 +294,5 @@ export default class order extends React.Component {
         </Modal>
       </div>
     );
-  }
-}
-
-class FilterForm extends React.Component {
-
-  render() {
-    return (
-      <div>
-        <Form layout='inline'>
-          <FormItem
-            label='城市'
-            name="city"
-            // noStyle
-            rules={[{ required: true, message: 'city is required' }]}
-          >
-            <Select placeholder='全部' style={{width: '100px'}}>
-              <Option value=''>全部</Option>
-              <Option value='1'>北京市</Option>
-              <Option value='2'>上海市</Option>
-              <Option value='3'>天津市</Option>
-            </Select>
-          </FormItem>
-
-          <FormItem
-            label='订单时间'
-            name="start_time"
-            rules={[{ required: true, message: 'start_time is required' }]}
-          >
-            <DatePicker />
-          </FormItem>
-          <FormItem
-            // style={{marginLeft: '5px'}}
-            label='~'
-            name="end_time"
-          >
-            <DatePicker />
-          </FormItem>
-
-          <FormItem
-            label='订单状态'
-            name="op_model"
-            rules={[{ required: true, message: 'op_model is required' }]}
-          >
-            <Select placeholder='全部' style={{width: '100px'}}>
-              <Option value=''>全部</Option>
-              <Option value='1'>进行中</Option>
-              <Option value='2'>结束行程</Option>
-            </Select>
-          </FormItem>
-
-          <FormItem>
-            <Button 
-              type='primary'
-              style={{
-                margin: '0 20px'
-              }}
-            >
-              查询
-            </Button>
-            <Button>重置</Button>
-          </FormItem>
-        </Form>
-      </div>
-      );
   }
 }
