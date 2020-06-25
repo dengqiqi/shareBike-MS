@@ -1,6 +1,7 @@
 import JsonP from 'jsonp'
 import axios from 'axios'
 import {Modal} from 'antd';
+import Utils from './../utils/utils'
 
 export default class Axios {
   static jsonp(options) {
@@ -25,7 +26,13 @@ export default class Axios {
         loading.style.display = 'block';
     }
     // const baseUrl = 'https://www.easy-mock.com/mock/5eeb4f5ebc83131fab731d75/mockapi'
-    const baseUrl = 'http://rap2.taobao.org:38080/app/mock/258492/'
+    let baseUrl = '';
+    
+    if (options.isMock) {
+      baseUrl = 'http://rap2.taobao.org:38080/app/mock/258492/'
+    } else {
+      baseUrl = 'http://rap2.taobao.org:38080/app/mock/258492/'
+    }
     
     return new Promise((resolve, reject)=>{
       axios({
@@ -55,5 +62,31 @@ export default class Axios {
         }
       })
     });
+  }
+
+  static requestList(_this, url,params, isMock) {
+    var data = {
+      params
+    }
+    this.ajax({
+      url,
+      data,
+      isMock
+    }).then((data)=>{
+      if (data && data.result) {
+        let list = data.result.item_list.map((item, index)=>{
+          item.key = index
+          return item; // is required
+        })
+  
+        _this.setState({
+          list,
+          pagination:Utils.pagination(data,(current)=>{
+              _this.params.page = current;
+              _this.requestList();
+          })
+        })
+      }
+    })
   }
 }

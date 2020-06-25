@@ -6,6 +6,8 @@ import {
 import axios from './../../axios/index'
 import Utils from './../../utils/utils'
 import BaseForm from './../../components/BaseForm/index'
+import QTable from './../../components/QTable/index'
+
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -14,6 +16,7 @@ export default class order extends React.Component {
   state = {
     orderConfirmVisible: false,
     orderInfo: {},
+    selectedRowKeys: []
   }
 
   params = {
@@ -59,35 +62,14 @@ export default class order extends React.Component {
   }
 
   requestList = () => {
-    const _this = this;
-    axios.ajax({
-      url: '/order/list',
-      data: {
-        params: {
-          page: this.params.page
-        }
-      }
-    }).then((res)=>{
-      let list = res.result.item_list.map((item, index)=>{
-        item.key = index
-        return item; // is required
-      })
-
-      this.setState({
-        list,
-        pagination:Utils.pagination(res,(current)=>{
-            _this.params.page = current;
-            _this.requestList();
-        })
-      })
-    })
+    axios.requestList(this, '/order/list', this.params, true)
   }
 
   // 订单确认
   handleConFirm = () => {
     let item = this.state.selectedItem;
 
-    if (!item) {
+    if (!item || item.length === 0) {
       Modal.info({
         title: '信息',
         content: '请选择一条订单进行结束'
@@ -128,18 +110,10 @@ export default class order extends React.Component {
     })
   }
 
-  onRowClick = (record, index) => {
-    let selectKey = [index];
-    this.setState({
-        selectedRowKeys: selectKey,
-        selectedItem: record
-    })
-  }
-
   openOrderDetail = () => {
     let item = this.state.selectedItem;
 
-    if (!item) {
+    if (!item || item.length === 0) {
       Modal.info({
         title: '信息',
         content: '请先选择一条订单进行结束'
@@ -152,6 +126,7 @@ export default class order extends React.Component {
   componentDidMount() {
     this.requestList();
   }
+
 
   render () {
     const columns = [
@@ -209,12 +184,6 @@ export default class order extends React.Component {
       wrapperCol: {span: 19}
     }
 
-    const selectedRowKeys = this.state.selectedRowKeys;
-    const rowSelection = {
-      type: 'radio',
-      selectedRowKeys
-    }
-
     return (
       <div style={{width: '100%'}}>
         <Card>
@@ -235,22 +204,15 @@ export default class order extends React.Component {
         </Card>
 
         <div className='content-wrap'>
-          <Table 
-            bordered
+          <QTable 
+            updateSelectedItem={
+              Utils.updateSelectedItem.bind(this)
+            }
             columns={columns}
             dataSource={this.state.list}
+            selectedRowKeys={this.state.selectedRowKeys}
             pagination={this.state.pagination}
-            rowSelection={rowSelection}
-            onRow={(record, index) => {
-              return {
-                onClick: (e) => {
-                  e.preventDefault();
-                  // e.stopPropagation();
-                  console.log(e, '----------------------')
-                  this.onRowClick(record, index);
-                }
-              };
-            }}
+            rowSelection='checkbox'
           />
         </div>
 

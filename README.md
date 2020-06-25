@@ -32,3 +32,6 @@ Development map features
 
 2020/06/24
 Packaging BseForm modules and requestList
+
+2020/06/25
+Packaging QTable modules
