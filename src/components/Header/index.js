@@ -2,8 +2,9 @@ import React from 'react'
 import { Row, Col } from 'antd'
 import './index.less'
 import Util from '../../utils/utils'
+import { connect } from 'react-redux'
 
-export default class Header extends React.Component{
+class Header extends React.Component{
   state = {
     userName: 'dengqq'
   }
@@ -58,3 +59,11 @@ export default class Header extends React.Component{
     )
   }
 }
+
+const mapToProps = state => {
+  return {
+    menuName: state.menuName
+  }
+}
+
+export default connect(mapToProps)(Header)

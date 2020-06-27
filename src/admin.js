@@ -3,11 +3,12 @@ import { Row, Col } from 'antd'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import NavLeft from './components/NavLeft'
+import { connect } from 'react-redux'
 import 'antd/dist/antd.css';
 import './style/common.less'
 
 
-export default class Admin extends React.Component{
+class Admin extends React.Component{
 
   render() {
     return (
@@ -28,3 +29,5 @@ export default class Admin extends React.Component{
     )
   }
 }
+
+export default connect()(Admin)
